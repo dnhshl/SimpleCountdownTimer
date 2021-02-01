@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.widget.TextView
 import splitties.toast.toast
+import java.util.*
 
 class ShowTimerActivity : AppCompatActivity() {
 
@@ -15,6 +17,8 @@ class ShowTimerActivity : AppCompatActivity() {
 
     var termin = ""
     var countdown = 0
+    private var secLeft : Long = 0
+    private var zielzeit : Long = 0
     private val mHandler : Handler by lazy { Handler() }
     private lateinit var mRunnable: Runnable
 
@@ -25,26 +29,54 @@ class ShowTimerActivity : AppCompatActivity() {
 
         val intent = intent
         termin = intent.getStringExtra(Constants.TIMERSTRING) ?: ""
-        countdown = intent.getIntExtra(Constants.DAUERINT, 0)
+        zielzeit = intent.getLongExtra(Constants.DAUERINT, 0)
 
         tvTermin.text = termin
         tvDauer.text = countdown.toString()
 
+        secLeft = zielzeit
+
         countdownStart()
+    }
+
+    private fun restZeit() : Long {
+        val now = Date()
+        return zielzeit - now.time/1000
     }
 
     private fun countdownStart(){
         mRunnable = Runnable {
-            countdown--
-            tvDauer.text = countdown.toString()
-            if (countdown > 0) mHandler.postDelayed(mRunnable, 1000)
-            if (countdown == 0){
-                val player = MediaPlayer.create(applicationContext,
-                    Settings.System.DEFAULT_NOTIFICATION_URI)
+            mHandler.postDelayed(mRunnable, 1000)
+            secLeft = restZeit()
+            if(secLeft > 0){
+                tvDauer.text = zeitAnzeige(secLeft)
+            }
+            if (secLeft <= 0){
+                tvDauer.text = zeitAnzeige(secLeft)
+                val player = MediaPlayer.create(applicationContext, Settings.System.DEFAULT_NOTIFICATION_URI)
                 player.start()
             }
         }
         mHandler.postDelayed(mRunnable, 1000)
+    }
+
+    private fun zeitAnzeige(sLeft: Long) : String {
+        var diff : Long = 0
+        var zeit = getString(R.string.time_over)
+
+        if(sLeft >= 0){
+            diff = sLeft
+            val h = diff / (60*60)
+            diff = diff - h * (60*60)
+            val m = diff / 60
+            diff = diff - m * 60
+            val s = diff
+            zeit = "noch\n"
+            zeit = if (h < 10) zeit + "0" + h + ":" else "$zeit$h:"
+            zeit = if (m < 10) zeit + "0" + m + ":" else "$zeit$m:"
+            zeit = if (s < 10) zeit + "0" + s + ""  else "$zeit$s"
+        }
+        return zeit
     }
 
 }
