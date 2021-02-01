@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SimpleCountdownTimer</string>
+
+    //MainActivity
+    <string name="show_timer">Zeige Timer</string>
+    <string name="set_timer">Neuer Termin</string>
+    <string name="hint_termin">IHR TERMIN</string>
+    <string name="hint_dauer">IHRE DAUER</string>
+    <string name="termin">Termin</string>
+    <string name="dauer">Dauer</string>
+</resources>
