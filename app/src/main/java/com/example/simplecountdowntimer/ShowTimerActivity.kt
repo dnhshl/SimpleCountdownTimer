@@ -1,8 +1,10 @@
 package com.example.simplecountdowntimer
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
 import android.widget.TextView
 import splitties.toast.toast
 
@@ -13,6 +15,8 @@ class ShowTimerActivity : AppCompatActivity() {
 
     var termin = ""
     var countdown = 0
+    private val mHandler : Handler by lazy { Handler() }
+    private lateinit var mRunnable: Runnable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +29,22 @@ class ShowTimerActivity : AppCompatActivity() {
 
         tvTermin.text = termin
         tvDauer.text = countdown.toString()
+
+        countdownStart()
     }
-    
+
+    private fun countdownStart(){
+        mRunnable = Runnable {
+            countdown--
+            tvDauer.text = countdown.toString()
+            if (countdown > 0) mHandler.postDelayed(mRunnable, 1000)
+            if (countdown == 0){
+                val player = MediaPlayer.create(applicationContext,
+                    Settings.System.DEFAULT_NOTIFICATION_URI)
+                player.start()
+            }
+        }
+        mHandler.postDelayed(mRunnable, 1000)
+    }
 
 }
