@@ -6,25 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_setTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/edit_inputDauer"
+        android:layout_width="240dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="45dp"
-        android:text="@string/set_timer"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_zeitAnzeige" />
+        android:gravity="center"
+        android:hint="@string/hint_dauer"
+        android:inputType="number|text"
+        app:layout_constraintStart_toEndOf="@+id/text_zeitAnzeige"
+        app:layout_constraintTop_toBottomOf="@+id/edit_inputTermin" />
 
     <TextView
         android:id="@+id/text_zeitAnzeige"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="45dp"
         android:text="@string/dauer"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_inputTermin" />
 
