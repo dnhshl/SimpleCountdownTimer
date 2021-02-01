@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         btnShowTimer.setOnClickListener {
             val intent = Intent(this, ShowTimerActivity::class.java)
             val message = etInput.text.toString()
-            intent.putExtra("Timerstring", message)
+            intent.putExtra(Constants.TIMERSTRING, message)
             startActivity(intent)
             Log.i(TAG, "Button gedrückt")
         }

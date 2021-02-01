@@ -10,7 +10,7 @@ class ShowTimerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_timer)
 
         val intent = intent
-        val message = intent.getStringExtra("Timerstring") ?: ""
+        val message = intent.getStringExtra(Constants.TIMERSTRING) ?: ""
 
         toast(message)
 
