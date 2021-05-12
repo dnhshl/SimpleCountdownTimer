@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import splitties.toast.toast
 import java.util.*
@@ -14,6 +16,7 @@ class ShowTimerActivity : AppCompatActivity() {
 
     private val tvTermin : TextView by lazy { findViewById(R.id.textView_termin) }
     private val tvDauer : TextView by lazy { findViewById(R.id.textView_dauer) }
+    private val btnStop : Button by lazy { findViewById(R.id.btnStop) }
 
     var termin = ""
     var countdown = 0
@@ -21,11 +24,15 @@ class ShowTimerActivity : AppCompatActivity() {
     private var zielzeit : Long = 0
     private val mHandler : Handler by lazy { Handler() }
     private lateinit var mRunnable: Runnable
+    private lateinit var player: MediaPlayer
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_timer)
+
+        btnStop.visibility = View.INVISIBLE
+        player = MediaPlayer.create(applicationContext, Settings.System.DEFAULT_NOTIFICATION_URI)
 
         val intent = intent
         termin = intent.getStringExtra(Constants.TIMERSTRING) ?: ""
@@ -37,6 +44,13 @@ class ShowTimerActivity : AppCompatActivity() {
         secLeft = zielzeit
 
         countdownStart()
+
+
+        btnStop.setOnClickListener {
+            player.stop()
+            player.release()
+            finish()
+        }
     }
 
     private fun restZeit() : Long {
@@ -53,8 +67,8 @@ class ShowTimerActivity : AppCompatActivity() {
             }
             if (secLeft <= 0){
                 tvDauer.text = zeitAnzeige(secLeft)
-                val player = MediaPlayer.create(applicationContext, Settings.System.DEFAULT_NOTIFICATION_URI)
                 player.start()
+                btnStop.visibility = View.VISIBLE
             }
         }
         mHandler.postDelayed(mRunnable, 1000)
@@ -78,5 +92,4 @@ class ShowTimerActivity : AppCompatActivity() {
         }
         return zeit
     }
-
 }

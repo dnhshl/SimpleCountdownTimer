@@ -10,4 +10,6 @@
     <string name="dauer">Dauer</string>
 
     <string name="time_over">Termin ist schon vorbei</string>
+
+    <string name="btn_stop">Stop</string>
 </resources>
